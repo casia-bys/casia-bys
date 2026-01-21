@@ -1,0 +1,119 @@
+{
+  "title": "Reactive Diffusion Policy: Slow-Fast Visual-Tactile Policy Learning for Contact-Rich Manipulation",
+  "authors": [
+    "Han Xue",
+    "Jieji Ren",
+    "Wendi Chen",
+    "Gu Zhang",
+    "Yuan Fang",
+    "Guoying Gu",
+    "Huazhe Xu",
+    "Cewu Lu"
+  ],
+  "abstract": "Humans can accomplish complex contact-rich tasks using vision and touch, with highly reactive capabilities such as fast response to external changes and adaptive control of contact forces; however, this remains challenging for robots. Existing visual imitation learning (IL) approaches rely on action chunking to model complex behaviors, which lacks the ability to respond instantly to real-time tactile feedback during the chunk execution. Furthermore, most teleoperation systems struggle to provide fine-grained tactile / force feedback, which limits the range of tasks that can be performed. To address these challenges, we introduce TactAR, a low-cost teleoperation system that provides real-time tactile feedback through Augmented Reality (AR), along with Reactive Diffusion Policy (RDP), a novel slow-fast visual-tactile imitation learning algorithm for learning contact-rich manipulation skills. RDP employs a two-level hierarchy: (1) a slow latent diffusion policy for predicting high-level action chunks in latent space at low frequency, (2) a fast asymmetric tokenizer for closed-loop tactile feedback control at high frequency. This design enables both complex trajectory modeling and quick reactive behavior within a unified framework. Through extensive evaluation across three challenging contact-rich tasks, RDP significantly improves performance compared to state-of-the-art visual IL baselines. Furthermore, experiments show that RDP is applicable across different tactile / force sensors. Code and videos are available on https://reactive-diffusion-policy.github.io.",
+  "published": "2025-03-04",
+  "arxiv_id": "2503.02881",
+  "url": "https://arxiv.org/abs/2503.02881",
+  "analysis": {
+    "核心问题": "如何在视觉模仿学习中加入实时触觉反馈，使机器人在接触丰富任务中既建模复杂轨迹又具备快速闭环反应能力。",
+    "研究动机": "人类在接触丰富任务中依靠视觉和触觉实现快速适应和精确力控；现有视觉模仿学习方法多采用开环动作块，难以在执行过程中响应实时触觉反馈，且多数遥操作系统缺少细粒度触觉反馈，限制了任务范围与精度。",
+    "主要贡献": [
+      "提出 TactAR：一个低成本、可扩展的AR触觉遥操作系统，以统一的3D形变场表示实现多种触觉/力传感器的实时触觉反馈。",
+      "提出 Reactive Diffusion Policy（RDP）：一种慢-快双层视觉-触觉模仿学习框架，慢层用潜在扩散策略预测高层动作块，快层用不对称分词器进行高频触觉闭环校正。",
+      "在三个具有挑战性的接触任务上显著超越最先进视觉模仿学习基线（>35%），验证了性能提升。",
+      "证明RDP跨不同触觉/力传感器（GelSight Mini、MCTac、关节力矩传感）可用，具备跨设备泛化能力。",
+      "提供开源代码与视频，支撑可复现与社区复现实验。"
+    ],
+    "方法概述": "构建慢-快双层架构：慢层为1–2Hz的潜在扩散策略（LDP），预测高层动作块并具非马尔可夫行为建模能力；快层为20–30Hz的不对称分词器（AT），将实时触觉信号（形变场、力/扭矩、图像）编码为局部token并闭环校正潜变量，使策略在动作块执行期内对环境变化作出快速反应；与TactAR数据采集与实时触觉渲染协同工作。",
+    "摘要分析": {
+      "核心问题": "机器人如何在接触丰富任务中像人一样快速响应外部变化并自适应控制接触力，而现有视觉模仿学习缺乏在动作块执行期间对实时触觉反馈的闭环响应。",
+      "研究动机": "人机差异：人依赖视觉+触觉实现精确接触与快速闭环；机器人受限于开环视觉模仿学习与缺失细粒度触觉反馈，难以胜任需要力控与快速反应的任务。",
+      "主要贡献": "提出TactAR与RDP：TactAR提供低成本多传感器统一的AR触觉反馈；RDP用慢-快层级策略在统一框架中同时建模复杂轨迹与高频闭环触觉控制。",
+      "方法概述": "采用“慢-快”双层控制：慢层潜在扩散策略在低频预测高层动作块，保留扩散模型与动作块在非马尔可夫行为建模上的优势；快层不对称分词器在高频闭环触觉反馈下微调潜变量，实现实时力控与快速反应。"
+    },
+    "引言分析": {
+      "研究背景": "视觉模仿学习（IL）如Diffusion Policy、ACT、π0等依赖动作块提升长期一致性与非马尔可夫行为建模，但在执行过程中为开环，无法响应环境变化；触觉信息在现有方法中多为观测补充而非动作层闭环控制。",
+      "现有问题": "缺少实时触觉闭环导致无法在接触丰富任务中实现快速响应与精细力控；传统遥操作系统多无细粒度触觉反馈，数据采集质量不足限制了端到端策略学习。",
+      "本文方案": "用TactAR获取高质量视觉-触觉演示数据，并在学习端以RDP的慢-快双层结构将触觉反馈融入动作层的闭环校正，使复杂轨迹建模与快速反应在统一框架中实现。",
+      "创新点": "以3D形变场作为跨传感器的统一表示进行AR渲染；用潜在扩散策略与不对称分词器构成的慢-快层级在动作块执行期内实现高频触觉闭环校正。"
+    },
+    "方法分析": {
+      "方法框架": "数据采集（TactAR遥操作，含多传感器输入与3D形变场表示）→策略学习（RDP的慢-快层级）；慢层（1–2Hz）预测高层动作块并提供非马尔可夫建模；快层（20–30Hz）以不对称分词器对触觉输入编码并闭环校正潜变量，实现快速响应与力控。",
+      "核心模块": "TactAR系统：Meta Quest3头显、AR渲染、多摄像头与触觉传感器流；RDP慢层：潜在扩散策略（LDP）建模动作块与轨迹；RDP快层：不对称分词器（AT）将触觉/图像信号转为局部token并闭环更新潜变量。",
+      "技术细节": "统一3D形变场表示适配不同光学触觉传感器与力/扭矩传感；不对称分词器实现高频信号的轻量编码与局部校正；潜变量动作块纠错结合触觉反馈提升执行稳定性与精度。",
+      "训练策略": "基于TactAR采集的多模态示范数据进行模仿学习；跨传感器与跨平台评估验证泛化；与现有视觉IL基线（如Diffusion Policy、ACT、π0）进行对比实验。"
+    },
+    "可借鉴句子": [
+      "RDP employs a two-level hierarchy: (1) a slow latent diffusion policy for predicting high-level action chunks in latent space at low frequency, (2) a fast asymmetric tokenizer for closed-loop tactile feedback control at high frequency.",
+      "This hierarchical structure allows the slow network to preserve its ability to model complex and non-Markovian actions via the diffusion model and action chunking, while the fast network achieves closed-loop control with real-time tactile feedback for precise force control and quick response.",
+      "TactAR system is designed with an emphasis on versatility and accessibility: (1) it supports multiple types of tactile/force sensors; (2) it can be easily deployed in different robot embodiments; (3) it is very cost-effective."
+    ],
+    "专业术语": [
+      {
+        "术语": "Imitation Learning (IL)",
+        "解释": "模仿学习，通过人类演示数据学习策略",
+        "使用场景": "策略学习阶段、实验对比"
+      },
+      {
+        "术语": "Action Chunking",
+        "解释": "动作块，将长时序动作分段预测以提升一致性",
+        "使用场景": "慢层建模复杂行为与缓解复合误差"
+      },
+      {
+        "术语": "Diffusion Policy",
+        "解释": "扩散策略，以扩散模型拟合动作分布的策略",
+        "使用场景": "慢层潜在扩散策略LDP"
+      },
+      {
+        "术语": "Latent Diffusion Policy (LDP)",
+        "解释": "潜在扩散策略，在潜空间以扩散模型预测高层动作块",
+        "使用场景": "慢层低频（1–2Hz）规划"
+      },
+      {
+        "术语": "Asymmetric Tokenizer (AT)",
+        "解释": "不对称分词器，将高频多模态信号编码为局部token用于闭环校正",
+        "使用场景": "快层高频（20–30Hz）闭环控制"
+      },
+      {
+        "术语": "Tactile / Force Sensing",
+        "解释": "触觉/力传感器，测量接触与受力信息",
+        "使用场景": "TactAR数据采集与RDP闭环输入"
+      },
+      {
+        "术语": "3D Deformation Field",
+        "解释": "3D形变场，跨传感器的统一触觉/力表示",
+        "使用场景": "AR渲染与多模态融合"
+      },
+      {
+        "术语": "Closed-loop Control",
+        "解释": "闭环控制，根据反馈实时调整输出",
+        "使用场景": "快层触觉闭环与动作块纠错"
+      },
+      {
+        "术语": "AR (Augmented Reality)",
+        "解释": "增强现实，用于在头显中渲染实时触觉与视觉信息",
+        "使用场景": "TactAR遥操作系统"
+      },
+      {
+        "术语": "Latent Action Chunk Correction",
+        "解释": "潜变量层面的动作块校正，结合触觉反馈提升精度",
+        "使用场景": "快层闭环对潜变量的微调"
+      }
+    ],
+    "图表分析": [
+      {
+        "图表": "图1",
+        "内容": "展示TactAR遥操作系统与RDP慢-快学习框架的关系：左侧为AR实时触觉反馈（以3D形变场表示并附着于末端执行器），右侧为RDP慢层潜扩散预测与快层不对称分词器的闭环触觉控制。",
+        "可借鉴点": "将系统架构与算法层级一体化呈现，清晰体现“慢规划、快闭环”的核心思想与数据到策略的闭环链路；统一表示（3D形变场）解决了跨传感器适配问题。"
+      },
+      {
+        "图表": "图2",
+        "内容": "TactAR系统总览，包括形变场提取、实时AR渲染、多传感器流（光学触觉、RGB摄像头、力/扭矩传感）与时间同步。",
+        "可借鉴点": "通过统一表示与时间同步设计确保遥操作的数据质量与实时性，为模仿学习提供高质量视觉-触觉示范。"
+      }
+    ],
+    "论文总结": "本文针对机器人接触丰富任务中视觉模仿学习缺乏实时触觉闭环与遥操作系统缺少细粒度触觉反馈的问题，提出TactAR与Reactive Diffusion Policy（RDP）。TactAR通过AR渲染统一的3D形变场，实现低成本多传感器的实时触觉反馈；RDP采用慢-快双层架构：慢层潜在扩散策略在1–2Hz预测高层动作块，保持对复杂与非马尔可夫行为的建模能力；快层不对称分词器在20–30Hz对触觉信号编码并闭环校正潜变量，实现快速响应与精细力控。实验在三项挑战任务中显著超越视觉IL基线（>35%），并验证跨不同触觉/力传感器的适用性与开源可复现性。该工作为视觉-触觉闭环学习与低成本遥操作提供了一条有效路径。",
+    "阅读建议": "重点关注统一3D形变场表示与不对称分词器如何将触觉反馈融入潜变量层面的闭环校正；建议结合动作块纠错与高频触觉闭环的设计细节，思考如何将其迁移到其他多模态控制任务或更复杂的接触场景；可进一步探索更高效的分词器与鲁棒同步机制，扩展到更广的传感器与硬件平台。"
+  },
+  "analyzed_at": "2026-01-21T23:20:45.805902"
+}
