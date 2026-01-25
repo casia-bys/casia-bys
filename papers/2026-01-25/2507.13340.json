@@ -1,0 +1,186 @@
+{
+  "title": "Latent Policy Steering with Embodiment-Agnostic Pretrained World Models",
+  "authors": [
+    "Yiqi Wang",
+    "Mrinal Verghese",
+    "Jeff Schneider"
+  ],
+  "abstract": "Learning visuomotor policies via imitation has proven effective across a wide range of robotic domains. However, the performance of these policies is heavily dependent on the number of training demonstrations, which requires expensive data collection in the real world. In this work, we aim to reduce data collection efforts when learning visuomotor robot policies by leveraging existing or cost-effective data from a wide range of embodiments, such as public robot datasets and the datasets of humans playing with objects (human data from play). Our approach leverages two key insights. First, we use optic flow as an embodiment-agnostic action representation to train a World Model (WM) across multi-embodiment datasets, and finetune it on a small amount of robot data from the target embodiment. Second, we develop a method, Latent Policy Steering (LPS), to improve the output of a behavior-cloned policy by searching in the latent space of the WM for better action sequences. In real world experiments, we observe significant improvements in the performance of policies trained with a small amount of data (over 50% relative improvement with 30 demonstrations and over 20% relative improvement with 50 demonstrations) by combining the policy with a WM pretrained on two thousand episodes sampled from the existing Open X-embodiment dataset across different robots or a cost-effective human dataset from play.",
+  "published": "2025-07-17",
+  "arxiv_id": "2507.13340",
+  "url": "https://arxiv.org/abs/2507.13340",
+  "analysis": {
+    "基本信息": {
+      "论文标题": "Latent Policy Steering with Embodiment-Agnostic Pretrained World Models",
+      "arXiv ID": "2507.13340",
+      "作者": [
+        "Yiqi Wang",
+        "Mrinal Verghese",
+        "Jeff Schneider"
+      ],
+      "所属机构": "Carnegie Mellon University, Robotics Institute, School of Computer Science",
+      "关键词": [
+        "visuomotor policies",
+        "world models",
+        "imitation learning",
+        "optical flow",
+        "policy steering"
+      ]
+    },
+    "0_摘要翻译": {
+      "背景": "通过模仿学习视觉运动策略在广泛的机器人领域已被证明是有效的。然而，这些策略的性能很大程度上依赖于训练演示的数量，这需要昂贵的现实世界数据收集。在这项工作中，我们的目标是通过利用来自广泛 embodiments 的现有或成本效益数据来减少学习视觉运动机器人策略时的数据收集工作量，例如公共机器人数据集和人类与物体玩耍的数据集。",
+      "问题": "机器人视觉运动策略的性能高度依赖于训练数据的规模和质量。现有机器人数据往往特定于特定机器人、任务或环境，不同embodiment或环境的数据收集过程可能需要重复进行。如何有效利用来自不同机器人embodiments的现有数据来解决数据稀缺问题。",
+      "方法": "我们的方法利用两个关键见解。首先，我们使用光流作为embodiment无关的动作表示来训练跨多embodiment数据集的世界模型（WM），并在来自目标embodiment的少量机器人数据上对其进行微调。其次，我们开发了一种方法，称为潜在策略转向（LPS），通过在世界模型的潜在空间中搜索更好的动作序列来改进行为克隆策略的输出。",
+      "结果": "在现实世界实验中，我们观察到通过将策略与在来自Open X-embodiment数据集中不同机器人采样的两千集或来自人类玩耍的成本效益人类数据集上预训练的WM相结合，显著改善了用少量数据训练的策略的性能（30次演示相对改进超过50%，50次演示相对改进超过20%）。"
+    },
+    "1_问题背景": {
+      "研究问题": "如何有效利用跨不同机器人embodiment的现有数据来减少新机器人策略学习所需的数据收集工作量",
+      "现有挑战": [
+        "挑战1：现有机器人数据往往特定于特定机器人、任务或环境，需要为不同embodiment重复数据收集",
+        "挑战2：跨embodiment训练时，特定于embodiment的信息（本体感受、动作）使得预训练表示高度依赖于数据集中包含的embodiment"
+      ],
+      "研究动机": "通过模仿学习实现高任务成功率需要收集足够的专家演示，这是一个耗时的过程。利用已有的机器人或人类视频数据可以显著降低数据收集成本。",
+      "gap分析": "现有方法如HPT等模型由于模型规模大，在特定任务上微调以提高性能可能很昂贵，有时推理速度慢。传统的视觉编码器预训练方法只提供视觉表示，而不能直接学习决策。"
+    },
+    "2_方法核心": {
+      "方法概述": "该方法通过预训练一个基于光流的embodiment无关的世界模型来跨不同机器人embodiment学习。首先使用光流作为统一动作表示预训练世界模型，然后在小量目标机器人数据上微调。推理时，使用潜在策略转向（LPS）技术，通过世界模型的潜在空间搜索更好的动作序列，结合鲁棒的价值函数来改进基础策略。",
+      "整体架构": "WM预训练阶段：使用光流作为动作表示，跨多embodiment数据预训练世界模型 → WM微调阶段：在小量目标机器人数据上微调WM → 策略学习阶段：基于小量演示学习行为克隆策略 → 价值函数学习阶段：学习鲁棒价值函数 → 推理阶段：使用LPS改进策略输出",
+      "核心创新": [
+        "创新点1：使用光流作为embodiment无关的动作表示，捕获像素空间的视觉运动，减少对特定embodiment的依赖",
+        "创新点2：预训练世界模型而非策略，因为世界模型可以利用次优数据",
+        "创新点3：潜在策略转向（LPS）技术，通过在潜在空间中搜索更好的动作序列来改进策略，利用世界模型的预测能力"
+      ]
+    },
+    "3_具体方法（关键）": {
+      "模块1": {
+        "名称": "光流编码世界模型",
+        "作用": "解决跨embodiment动作表示和动力学建模问题",
+        "输入输出": "输入：光流图像序列和观测；输出：预测的未来状态和奖励",
+        "实现细节": "使用Recurrent-State-Space-Model（RSSM）架构，包含编码器（将视觉观测映射到潜在状态）、潜在转移函数（预测未来潜在状态）、解码器（主要用于训练时梯度传播）。每个光流被编码为向量输入到WM，编码器与WM端到端训练。",
+        "关键参数": "预训练数据集：2000集来自Open X-embodiment数据集中不同机器人；目标embodiment数据：<1小时收集"
+      },
+      "模块2": {
+        "名称": "潜在策略转向（LPS）",
+        "作用": "在推理时改进行为克隆策略的性能",
+        "输入输出": "输入：基础策略的候选动作序列；输出：选择的最优动作",
+        "实现细节": "通过世界模型模拟候选动作序列，预测未来状态，然后使用鲁棒价值函数评估这些预测状态，选择价值最高的动作序列。利用演示中每个状态都是目标状态这一观察，将目标状态比较转化为基于状态的价值函数。",
+        "关键参数": "评估指标：基于状态价值和与数据集分布的接近程度"
+      },
+      "模块3": {
+        "名称": "鲁棒价值函数",
+        "作用": "评估预测状态的质量，处理分布偏移问题",
+        "输入输出": "输入：状态表示；输出：状态价值分数",
+        "实现细节": "学习在分布内和分布外数据上都鲁棒的价值函数。在推理时，价值函数引导策略朝向具有更高奖励和更接近数据集分布的状态，避免偏离数据集。",
+        "关键参数": "训练数据：包含分布内和分布外样本；优化目标：最大化价值的同时保持与数据集分布的接近性"
+      }
+    },
+    "4_训练策略": {
+      "训练流程": "阶段1：WM预训练 - 在多embodiment数据上使用光流预训练世界模型；阶段2：WM微调 - 在少量目标机器人数据上微调WM；阶段3：策略学习 - 基于小量演示学习行为克隆策略；阶段4：价值函数学习 - 学习鲁棒价值函数；阶段5：推理时LPS - 使用预训练WM和价值函数改进策略输出",
+      "损失函数": [
+        {
+          "名称": "WM损失",
+          "公式": "重构损失 + KL散度损失 + 奖励预测损失",
+          "作用": "训练世界模型的动态预测和重构能力"
+        },
+        {
+          "名称": "价值函数损失",
+          "公式": "MSE回归损失",
+          "作用": "学习准确的状态价值评估"
+        }
+      ],
+      "优化器": "Adam优化器（论文未给出具体参数）",
+      "学习率调度": "未在提供内容中明确说明",
+      "正则化": "使用KL散度正则化防止过拟合",
+      "数据增强": "基于不同embodiment数据的混合训练"
+    },
+    "5_特征设计": {
+      "输入特征": "视觉观测 + 光流 + 目标状态（如适用）",
+      "特征提取": "使用神经网络编码器提取视觉特征和光流特征，映射到潜在状态空间",
+      "特征融合": "光流特征与视觉观测特征在编码器中进行融合，形成统一的状态表示",
+      "特征维度": "潜在状态维度未在提供内容中明确说明"
+    },
+    "6_实验": {
+      "数据集": {
+        "训练集": "Open X-embodiment数据集（2000集跨不同机器人）+ 人类玩耍数据集 + 小量目标机器人演示（30-50个演示）",
+        "测试集": "现实世界机器人任务评估",
+        "数据来源": "公共机器人数据集 + 人类视频数据 + 现场收集的目标机器人演示"
+      },
+      "评估指标": "任务成功率（基于是否完成目标任务）",
+      "实现细节": {
+        "硬件": "未在提供内容中明确说明",
+        "框架": "基于深度学习的PyTorch/TensorFlow实现",
+        "batch_size": "未在提供内容中明确说明",
+        "训练时间": "WM预训练 + 微调阶段，数据收集<1小时",
+        "参数量": "未在提供内容中明确说明"
+      },
+      "对比方法": [
+        "基线方法1：纯模仿学习基线 - 仅使用小量目标机器人演示训练的行为克隆策略",
+        "基线方法2：HPT (Hierarchical Pretrained Transformer) - 代表性的跨embodiment预训练方法",
+        "基线方法3：无LPS的预训练WM - 仅使用预训练WM而不进行策略转向"
+      ],
+      "实验设置": "现实世界机器人操作任务：使用30-50个演示的小数据场景；消融实验：比较有无LPS、不同预训练数据规模、不同演示数量等"
+    },
+    "7_结果分析": {
+      "主结果": "在30个演示下相对改进超过50%，在50个演示下相对改进超过20%。在50-100个演示下实现超过25%的相对改进。",
+      "消融实验": "未在提供的前15页内容中详细描述消融实验结果",
+      "定性结果": "预训练WM结合LPS显著改善了小数据场景下的策略性能",
+      "失败案例": "论文提到当任务为长期且目标图像超出策略和WM可达范围时，传统的基于目标图像相似性的方法效果较差"
+    },
+    "8_借鉴句子": [
+      "Learning visuomotor policies via imitation has proven effective across a wide range of robotic domains.",
+      "Our approach leverages two key insights. First, we use optic flow as an embodiment-agnostic action representation to train a World Model across multi-embodiment datasets.",
+      "Since every demonstration collected for Behavior Cloning is an expert demonstration that accomplishes the task, every state in the demonstration becomes a goal state."
+    ],
+    "9_专业术语": [
+      {
+        "术语": "World Model",
+        "中文": "世界模型",
+        "解释": "学习环境动态和转移函数的模型，能够预测未来状态"
+      },
+      {
+        "术语": "Optic Flow",
+        "中文": "光流",
+        "解释": "像素空间中视觉运动的表示，用作跨embodiment的统一动作表示"
+      },
+      {
+        "术语": "Latent Policy Steering",
+        "中文": "潜在策略转向",
+        "解释": "在潜在空间中搜索更好动作序列来改进策略的技术"
+      },
+      {
+        "术语": "Behavior Cloning",
+        "中文": "行为克隆",
+        "解释": "通过模仿专家演示来学习策略的监督学习方法"
+      },
+      {
+        "术语": "Embodiment",
+        "中文": "具体化/具身",
+        "解释": "机器人的物理形态和特性，包括传感器、执行器等"
+      }
+    ],
+    "10_图表分析": [
+      {
+        "图表": "图1",
+        "内容": "世界模型预训练流程图，展示了如何使用光流作为embodiment无关的动作表示来集成来自多种类型embodiment（机器人、人类）的数据。显示了共享动作空间的概念和编码器端到端训练过程。",
+        "设计亮点": "清晰展示了跨embodiment数据融合的概念，突出光流作为统一动作表示的关键作用",
+        "可借鉴点": "展示了如何有效利用异构数据源进行预训练的方法设计思路",
+        "关键发现": "光流作为动作表示能够有效桥接不同embodiment之间的差异"
+      },
+      {
+        "图表": "图2",
+        "内容": "方法概览图，展示了完整的流水线：包括WM预训练、微调、行为克隆策略学习、鲁棒价值函数学习，以及推理时的LPS过程。",
+        "设计亮点": "完整展示了从预训练到推理的全流程，突出了各个组件之间的协作关系",
+        "可借鉴点": "展示了端到端学习系统如何设计模块化架构",
+        "关键发现": "预训练WM和LPS的结合能够有效提升小数据场景下的策略性能"
+      }
+    ],
+    "11_论文总结": {
+      "核心贡献": "提出使用光流作为embodiment无关的动作表示来预训练世界模型；开发了潜在策略转向（LPS）技术来改进推理时策略性能；证明了该方法在小数据场景下的有效性",
+      "方法优势": "相比现有方法，能够有效利用跨embodiment的现有数据，显著减少新机器人策略学习的数据收集工作量；LPS技术能够在不修改基础策略的情况下改进性能；适用于长期任务和分布偏移情况",
+      "局限性": "依赖光流估计的质量；需要预训练数据的质量和多样性；计算开销可能较大",
+      "应用场景": "适用于机器人策略学习的小数据场景，特别是需要快速部署新机器人策略的情况；可用于各种机器人操作任务",
+      "扩展方向": "探索更有效的embodiment无关表示；改进价值函数的学习方法；扩展到更多类型的机器人任务和环境"
+    }
+  },
+  "analyzed_at": "2026-01-25T23:18:19.158755"
+}
