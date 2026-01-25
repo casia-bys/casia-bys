@@ -1,0 +1,24 @@
+{
+  "title": "Autoregressive Action Sequence Learning for Robotic Manipulation",
+  "authors": [
+    "Xinyu Zhang",
+    "Yuhan Liu",
+    "Haonan Chang",
+    "Liam Schramm",
+    "Abdeslam Boularias"
+  ],
+  "abstract": "Designing a universal policy architecture that performs well across diverse robots and task configurations remains a key challenge. In this work, we address this by representing robot actions as sequential data and generating actions through autoregressive sequence modeling. Existing autoregressive architectures generate end-effector waypoints sequentially as word tokens in language modeling, which are limited to low-frequency control tasks. Unlike language, robot actions are heterogeneous and often include continuous values -- such as joint positions, 2D pixel coordinates, and end-effector poses -- which are not easily suited for language-based modeling. Based on this insight, we introduce a straightforward enhancement: we extend causal transformers' single-token prediction to support predicting a variable number of tokens in a single step through our Chunking Causal Transformer (CCT). This enhancement enables robust performance across diverse tasks of various control frequencies, greater efficiency by having fewer autoregression steps, and lead to a hybrid action sequence design by mixing different types of actions and using a different chunk size for each action type. Based on CCT, we propose the Autoregressive Policy (ARP) architecture, which solves manipulation tasks by generating hybrid action sequences. We evaluate ARP across diverse robotic manipulation environments, including Push-T, ALOHA, and RLBench, and show that ARP, as a universal architecture, matches or outperforms the environment-specific state-of-the-art in all tested benchmarks, while being more efficient in computation and parameter sizes. Videos of our real robot demonstrations, all source code and the pretrained models of ARP can be found at http://github.com/mlzxy/arp.",
+  "published": "2024-10-04",
+  "arxiv_id": "2410.03132",
+  "url": "https://arxiv.org/abs/2410.03132",
+  "analysis": {
+    "基本信息": {
+      "论文标题": "Autoregressive Action Sequence Learning for Robotic Manipulation",
+      "arXiv ID": "2410.03132",
+      "关键词": []
+    },
+    "raw": "The user asks to \"请分析这篇论文\" and provides a fairly extensive excerpt, covering the title, authors, abstract, and part of the content (first 15 pages). The user then asks to \"用JSON格式返回\" with a given schema for the analysis, covering many aspects: basic info, translation of abstract, problem background, method core, detailed method modules, training strategies, feature design, experiments, results, etc. The requirement is that the analysis must be thorough, specific with numbers, parameter values, etc., and \"只返回JSON\". There's no other instruction that suggests we should refuse or mention policy.\n\nThe request is to summarize and analyze a paper. This is allowed content. The user wants the JSON structure with detailed analysis, translation, etc. The user didn't request any copyrighted text beyond what they've already provided (the abstract and some excerpt). The user provided excerpt is presumably copyrighted but the user has provided it themselves. Summarizing or analyzing is permissible under fair use. So we can comply. The JSON must include the fields as required.\n\nWe need to produce a JSON that includes all the requested fields. Provide Chinese translation of the abstract, background, etc. Since the abstract and paper are given, we need to translate them into Chinese. The user gave the abstract in English; we need to translate.\n\nThe user also wants analysis that includes specific values for parameters, experiments, etc. However, the excerpt only provides limited specifics; we might need to infer some details or note that the information is not provided in the excerpt.\n\nThe schema includes many fields, including \"4_训练策略\", \"5_特征设计\", \"6_实验\", \"7_结果分析\", etc. In the excerpt, many specifics are not given: training pipeline, loss functions, hyperparameters, evaluation metrics, etc. We may have to note that the excerpt does not provide those details, but we can make assumptions or note that they are not given.\n\nWe need to ensure we don't hallucinate data. The user explicitly a",
+    "解析状态": "API返回格式异常"
+  },
+  "analyzed_at": "2026-01-25T08:41:05.454139"
+}
